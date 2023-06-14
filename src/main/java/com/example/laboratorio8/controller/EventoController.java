@@ -2,7 +2,9 @@ package com.example.laboratorio8.controller;
 
 
 import com.example.laboratorio8.Entity.Evento;
+import com.example.laboratorio8.Entity.TipoTickerEvento;
 import com.example.laboratorio8.repository.EventoRepository;
+import com.example.laboratorio8.repository.TipoTickerEventoRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -103,9 +105,11 @@ public class EventoController {
         return ResponseEntity.badRequest().body(responseMap);
     }
 
+    @Autowired
+    TipoTickerEventoRepository tipoTickerEventoRepository;
     @ResponseBody
     @GetMapping("/eventoConTipodeTicket/{id}")
-    public ResponseEntity<HashMap<String,Object>>listarUnEvento(@PathVariable String id){
+    public ResponseEntity<HashMap<String,Object>> eventoConTipoDeTicket(@PathVariable String id){
 
 
         HashMap<String, Object> responseMap = new HashMap<>();
@@ -120,6 +124,16 @@ public class EventoController {
                 Optional<Evento> opt = eventoRepository.findById(ID);
                 if (opt.isPresent()) {
                     Evento evento = opt.get();
+                    int iddd = evento.getId();
+                    List<TipoTickerEvento> listaTickets = tipoTickerEventoRepository.findAll();
+
+                    int ppp = 0;
+                    for (TipoTickerEvento p : listaTickets){
+                        ppp = p.getIdevento().getId();
+                        if(p.getIdevento().getId().equals(evento.getId())){
+
+                        }
+                    }
                     responseMap.put("Evento",evento);
                     responseMap.put("Resultado","exitoso");
                     return ResponseEntity.ok(responseMap);
